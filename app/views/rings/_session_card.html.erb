@@ -1,0 +1,27 @@
+<%# locals: (session:) %>
+<div class="card session-card h-100">
+  <div class="card-header">
+    <strong>Week <%= session.week_number %></strong>
+  </div>
+  <div class="card-body d-flex flex-column">
+    <p class="fs-6 fw-semibold"><%= session.guiding_question %></p>
+
+    <h6 class="mt-3 text-muted small text-uppercase">Resources</h6>
+    <p class="text-muted small fst-italic mb-1">Suggested starting points. The ring chooses what to actually read.</p>
+    <ul class="small">
+      <% session.resources_list.each do |resource| %>
+        <li><%= resource %></li>
+      <% end %>
+    </ul>
+
+    <h6 class="mt-3 text-muted small text-uppercase">Discussion Prompts</h6>
+    <ol class="small">
+      <% session.discussion_prompts_list.each do |prompt| %>
+        <li><%= prompt %></li>
+      <% end %>
+    </ol>
+
+    <h6 class="mt-3 text-muted small text-uppercase">Inquiry Activity</h6>
+    <p class="small fst-italic mt-auto mb-0"><%= session.inquiry_activity %></p>
+  </div>
+</div>

@@ -1,0 +1,93 @@
+<%# Hero %>
+<div class="text-center py-5">
+  <h1 class="display-5 fw-bold"><%= ENV.fetch("APP_NAME", "StudyRings Demo") %></h1>
+  <p class="lead text-muted col-md-8 mx-auto"><%= ENV.fetch("APP_TAGLINE", "") %></p>
+  <div class="mt-4 d-flex justify-content-center gap-3">
+    <% if signed_in? %>
+      <%= link_to "Go to my rings", rings_path, class: "btn btn-accent btn-lg" %>
+    <% else %>
+      <%= link_to "Sign up to create your first Ring", sign_up_path, class: "btn btn-accent btn-lg" %>
+      <%= link_to "Sign in", sign_in_path, class: "btn btn-outline-secondary btn-lg" %>
+    <% end %>
+  </div>
+</div>
+
+<%# How a Ring works %>
+<div class="row g-4 py-4 border-top border-bottom mb-5">
+  <div class="col-md-4">
+    <div class="card h-100 bg-transparent border-0">
+      <div class="card-body">
+        <h5 class="card-title" style="color: var(--accent);">Origin &amp; Rhythm</h5>
+        <p class="card-text text-muted">
+          You define the topic, who's coming, how often you meet, and why. The ring gets a
+          focus statement, three learning goals, and a session arc built around your context.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100 bg-transparent border-0">
+      <div class="card-body">
+        <h5 class="card-title" style="color: var(--accent);">Build &amp; Invite</h5>
+        <p class="card-text text-muted">
+          Each session gets a guiding question, resources, discussion prompts, and an inquiry
+          activity. Weeks 4 and 5 suggest outside voices to bring in.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100 bg-transparent border-0">
+      <div class="card-body">
+        <h5 class="card-title" style="color: var(--accent);">Transform</h5>
+        <p class="card-text text-muted">
+          Week 6 is always a creation session. The ring produces a real artifact together —
+          a synthesis document, a teaching framework, or a proposal for what comes next.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%# Static example charter card %>
+<div class="row justify-content-center mb-5">
+  <div class="col-lg-8">
+    <p class="text-center text-muted mb-3">Here's what a generated ring looks like:</p>
+    <div class="card border-secondary">
+      <div class="card-header text-muted small">
+        Example ring — <em>Network theory and how communities actually organize</em>
+      </div>
+      <div class="card-body">
+        <p class="small">
+          This ring studies how network theory explains — and fails to explain — the way
+          human communities actually form, sustain, and dissolve. Members will move from
+          foundational concepts to applied critique, ending with a shared synthesis of
+          what the framework gets right and where it breaks down in practice.
+        </p>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <h6 class="text-muted small text-uppercase">Learning goals</h6>
+            <ul class="small mb-0">
+              <li>Articulate the core claims of network theory in your own words</li>
+              <li>Apply network concepts to a real community you know</li>
+              <li>Evaluate where the theory's assumptions break down</li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <h6 class="text-muted small text-uppercase">Week 1 guiding question</h6>
+            <p class="small fst-italic mb-0">
+              "What do we already believe about how communities form — and where did those beliefs come from?"
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%# Bottom CTA %>
+<% unless signed_in? %>
+  <div class="text-center pb-5">
+    <%= link_to "Sign up to create your first Ring →", sign_up_path, class: "btn btn-accent btn-lg" %>
+  </div>
+<% end %>

@@ -1,0 +1,128 @@
+<%# Page header %>
+<div class="d-flex justify-content-between align-items-start mb-4">
+  <h1 class="mb-0"><%= @ring.topic %></h1>
+  <div class="d-flex gap-2">
+    <a href="#" data-controller="print" data-action="click->print#print"
+       class="btn btn-outline-secondary btn-sm">Print</a>
+    <%= link_to "Delete ring", ring_path(@ring),
+          data: { turbo_method: :delete, turbo_confirm: "Delete this ring and its curriculum? This cannot be undone." },
+          class: "btn btn-outline-danger btn-sm" %>
+  </div>
+</div>
+
+<% if @ring.status == "draft" %>
+  <div class="card mb-4">
+    <div class="card-body">
+      <dl class="row mb-0">
+        <dt class="col-sm-3">Topic</dt>
+        <dd class="col-sm-9"><%= @ring.topic %></dd>
+        <dt class="col-sm-3">Background</dt>
+        <dd class="col-sm-9"><%= @ring.member_background.capitalize %></dd>
+        <dt class="col-sm-3">Frequency</dt>
+        <dd class="col-sm-9"><%= @ring.meeting_frequency.capitalize %></dd>
+        <dt class="col-sm-3">Purpose</dt>
+        <dd class="col-sm-9 mb-0"><%= @ring.purpose %></dd>
+      </dl>
+    </div>
+  </div>
+
+  <p class="text-muted">
+    This will use 1 of your <%= ENV.fetch("AI_CALLS_PER_USER_PER_DAY", "50") %> daily AI calls.
+  </p>
+
+  <%= form_with url: generate_ring_path(@ring), method: :post do |f| %>
+    <%= f.submit "Generate curriculum", class: "btn btn-accent btn-lg" %>
+  <% end %>
+
+<% elsif @ring.status == "generating" %>
+  <div class="text-center py-5" data-controller="ring-poller">
+    <div class="spinner-border text-warning mb-3" style="width: 3rem; height: 3rem;" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text-muted">Drafting your charter and six sessions. This usually takes 8 to 15 seconds.</p>
+  </div>
+
+<% elsif @ring.status == "complete" && @charter %>
+  <div class="row">
+    <%# Main column %>
+    <div class="col-lg-9">
+
+      <%# O.R.B.I.T. charter card %>
+      <div class="card mb-4">
+        <div class="card-header"><strong>Learning Charter</strong></div>
+        <div class="card-body">
+          <p><%= @charter.focus_statement %></p>
+
+          <h6 class="mt-3">Learning Goals</h6>
+          <ul>
+            <% @charter.learning_goals_list.each do |goal| %>
+              <li><%= goal %></li>
+            <% end %>
+          </ul>
+
+          <h6 class="mt-3">Success Indicators</h6>
+          <ul>
+            <% @charter.success_indicators_list.each do |indicator| %>
+              <li><%= indicator %></li>
+            <% end %>
+          </ul>
+
+          <h6 class="mt-3">Inquiry Framework</h6>
+          <p class="mb-0"><%= @charter.inquiry_framework %></p>
+        </div>
+      </div>
+
+      <%# Week-by-week session timeline %>
+      <h5 class="mb-3">Six-Session Plan</h5>
+      <div class="session-timeline mb-4">
+        <% @sessions.each do |session| %>
+          <%= render "rings/session_card", session: session %>
+        <% end %>
+      </div>
+
+      <%# Raw response toggle %>
+      <div class="mb-4">
+        <a class="btn btn-outline-secondary btn-sm"
+           data-bs-toggle="collapse"
+           href="#raw-response"
+           role="button"
+           aria-expanded="false">
+          Show raw Gemini response
+        </a>
+        <div class="collapse mt-2" id="raw-response">
+          <pre class="p-3 rounded small" style="background: rgba(255,255,255,0.05); max-height: 400px; overflow-y: auto;"><%= @charter.gemini_raw %></pre>
+        </div>
+      </div>
+
+      <%# AI disclaimer %>
+      <p class="text-muted small fst-italic">
+        Curricula are AI-generated starting points, not pedagogical advice. Adapt before using with your ring.
+      </p>
+
+    </div><%# /col-lg-9 %>
+
+    <%# Artifact sidebar %>
+    <div class="col-lg-3">
+      <div class="card artifact-sidebar">
+        <div class="card-header d-flex align-items-center gap-2">
+          <%= render "rings/concentric_ring_marker", current_week: 6, size: :sm %>
+          <strong class="small">What this ring is building</strong>
+        </div>
+        <div class="card-body">
+          <p class="small"><%= @charter.artifact_template %></p>
+
+          <h6 class="mt-3 text-muted small text-uppercase">Suggested voices</h6>
+          <p class="small text-muted mb-0"><%= @charter.invite_suggestions %></p>
+        </div>
+      </div>
+    </div><%# /col-lg-3 %>
+
+  </div><%# /row %>
+
+<% elsif @ring.status == "failed" %>
+  <%= render "shared/ai_error", error_type: :error %>
+  <%= form_with url: generate_ring_path(@ring), method: :post do |f| %>
+    <%= f.submit "Retry", class: "btn btn-accent mt-3" %>
+  <% end %>
+
+<% end %>

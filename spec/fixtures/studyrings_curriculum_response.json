@@ -1,0 +1,102 @@
+{
+  "focus_statement": "This ring explores how peer learning shapes knowledge in communities of practice, focusing on what happens when there is no instructor and learning emerges from shared inquiry.",
+  "learning_goals": [
+    "Articulate the difference between instructor-led and peer-facilitated learning",
+    "Apply an inquiry framework to facilitate a peer session without a leader",
+    "Produce a shared synthesis of what the ring learned and how it learned it"
+  ],
+  "success_indicators": [
+    "Each member can explain the ring's core inquiry in their own words by Week 3",
+    "The ring completes a Week 6 artifact collaboratively",
+    "Members report feeling more connected to the topic after Week 6 than before Week 1"
+  ],
+  "inquiry_framework": "Use the Three Lenses: (1) Personal — what does this mean for me? (2) Relational — how does this affect the group? (3) Structural — what systems does this reveal?",
+  "invite_suggestions": "In Week 4, invite a practitioner who runs peer-learning programs in a non-academic setting. In Week 5, invite someone who has participated in a ring or study group that failed — failure cases teach more than success stories.",
+  "artifact_template": "A one-page synthesis document: what the ring studied, what it concluded, what it would do differently in a second ring on this topic, and one open question the ring did not resolve.",
+  "sessions": [
+    {
+      "week_number": 1,
+      "guiding_question": "What do we already believe about how people learn from each other, and where did those beliefs come from?",
+      "resources": [
+        "Situated Learning by Lave and Wenger (Chapter 1 excerpt) — foundational framing of learning as participation",
+        "The Peer Learning Handbook by Boud et al. (Introduction) — practical orientation to peer methods"
+      ],
+      "discussion_prompts": [
+        "When have you learned something important from a peer rather than a teacher? What made it stick?",
+        "What assumptions about teaching and learning did you arrive with today?",
+        "What would need to be true for a group without an instructor to learn something difficult?"
+      ],
+      "inquiry_activity": "Each member shares one example of learning from a peer. Group maps common themes and names two patterns they want to test across the six weeks."
+    },
+    {
+      "week_number": 2,
+      "guiding_question": "How does an inquiry framework change the way a group talks about a topic?",
+      "resources": [
+        "The Art of Powerful Questions by Vogt, Brown, and Isaacs — applies directly to peer facilitation",
+        "Thinking Together by William Isaacs (Chapter 4) — dialogue vs. debate as a distinction the ring can use"
+      ],
+      "discussion_prompts": [
+        "What is the difference between a question that opens and a question that closes?",
+        "Pick one question from last week. How would you reframe it using the Three Lenses?",
+        "What would it look like to apply this framework to a topic you find genuinely difficult?"
+      ],
+      "inquiry_activity": "Practice session: one member brings a real question; the rest use the Three Lenses framework to generate follow-on questions. Debrief on what the framework made visible."
+    },
+    {
+      "week_number": 3,
+      "guiding_question": "What are the conditions that make peer learning break down, and what does that reveal about how it works?",
+      "resources": [
+        "Collaborative Learning Techniques by Barkley et al. (Chapter 2) — identifies common failure modes",
+        "The Wisdom of Crowds by Surowiecki (Chapter 10) — when groups get worse at thinking, not better"
+      ],
+      "discussion_prompts": [
+        "Recall a group learning experience that failed. What was the structural cause?",
+        "Which failure mode from the reading most resembles a risk in this ring?",
+        "What would you add to the Three Lenses framework to address one of those failure modes?"
+      ],
+      "inquiry_activity": "Ring audit: each member scores the ring on three dimensions (safety, rigor, engagement) on a 1-5 scale. Share aggregated scores and discuss what they reveal."
+    },
+    {
+      "week_number": 4,
+      "guiding_question": "What does someone who has run peer learning programs in practice know that the literature doesn't say?",
+      "resources": [
+        "Cultivating Communities of Practice by Wenger, McDermott, and Snyder (Chapter 3) — practitioner-oriented",
+        "Five questions prepared by the ring for the guest, submitted 48 hours before the session"
+      ],
+      "discussion_prompts": [
+        "What did the guest say that contradicted something you read in Weeks 1-3?",
+        "What question did you not ask but wish you had?",
+        "How would you revise the Three Lenses framework based on what the guest shared?"
+      ],
+      "inquiry_activity": "Guest conversation (45 minutes). Remaining 15 minutes: ring members capture three things they want to carry into the Week 6 artifact from today's conversation."
+    },
+    {
+      "week_number": 5,
+      "guiding_question": "What does a peer learning ring that failed teach us about what makes one succeed?",
+      "resources": [
+        "Failure cases in collaborative learning — at least two examples the ring sourced itself",
+        "Guest's own account of a failed ring or study group, requested in advance"
+      ],
+      "discussion_prompts": [
+        "What is the single most important structural condition for a peer learning ring to succeed?",
+        "If you were designing a ring for a topic you care about, what would you change from what we did here?",
+        "What would the artifact need to say for it to be genuinely useful to someone who wasn't in this ring?"
+      ],
+      "inquiry_activity": "Draft artifact outline: ring agrees on a shared structure for the Week 6 synthesis document. Each member takes one section to draft before the final session."
+    },
+    {
+      "week_number": 6,
+      "guiding_question": "What did we actually learn, and how will we share it?",
+      "resources": [
+        "Drafts produced by each member in Week 5 — the ring's own material",
+        "Week 1 assumptions list retrieved from notes — used to measure shift"
+      ],
+      "discussion_prompts": [
+        "What changed in how you understand peer learning from Week 1 to Week 6?",
+        "What is the one thing you would tell someone starting a ring tomorrow?",
+        "What question is still open for you — the one this ring did not resolve?"
+      ],
+      "inquiry_activity": "Synthesis session: ring assembles the final document collaboratively, reconciles member drafts, and agrees on the one open question to name at the end."
+    }
+  ]
+}
