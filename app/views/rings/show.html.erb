@@ -11,28 +11,38 @@
 </div>
 
 <% if @ring.status == "draft" %>
-  <div class="card mb-4">
-    <div class="card-body">
-      <dl class="row mb-0">
-        <dt class="col-sm-3">Topic</dt>
-        <dd class="col-sm-9"><%= @ring.topic %></dd>
-        <dt class="col-sm-3">Background</dt>
-        <dd class="col-sm-9"><%= @ring.member_background.capitalize %></dd>
-        <dt class="col-sm-3">Frequency</dt>
-        <dd class="col-sm-9"><%= @ring.meeting_frequency.capitalize %></dd>
-        <dt class="col-sm-3">Purpose</dt>
-        <dd class="col-sm-9 mb-0"><%= @ring.purpose %></dd>
-      </dl>
+  <div data-controller="curriculum-generator"
+       data-curriculum-generator-ring-path-value="<%= ring_path(@ring) %>">
+
+    <div data-curriculum-generator-target="form">
+      <div class="card mb-4">
+        <div class="card-body">
+          <dl class="row mb-0">
+            <dt class="col-sm-3">Topic</dt>
+            <dd class="col-sm-9"><%= @ring.topic %></dd>
+            <dt class="col-sm-3">Background</dt>
+            <dd class="col-sm-9"><%= @ring.member_background.capitalize %></dd>
+            <dt class="col-sm-3">Frequency</dt>
+            <dd class="col-sm-9"><%= @ring.meeting_frequency.capitalize %></dd>
+            <dt class="col-sm-3">Purpose</dt>
+            <dd class="col-sm-9 mb-0"><%= @ring.purpose %></dd>
+          </dl>
+        </div>
+      </div>
+
+      <p class="text-muted">
+        This will use 1 of your <%= ENV.fetch("AI_CALLS_PER_USER_PER_DAY", "50") %> daily AI calls.
+      </p>
+
+      <%= form_with url: generate_ring_path(@ring), method: :post,
+            data: { action: "submit->curriculum-generator#start" } do |f| %>
+        <%= f.submit "Generate curriculum", class: "btn btn-accent btn-lg" %>
+      <% end %>
     </div>
+
+    <%= render "rings/generating_panel" %>
+
   </div>
-
-  <p class="text-muted">
-    This will use 1 of your <%= ENV.fetch("AI_CALLS_PER_USER_PER_DAY", "50") %> daily AI calls.
-  </p>
-
-  <%= form_with url: generate_ring_path(@ring), method: :post do |f| %>
-    <%= f.submit "Generate curriculum", class: "btn btn-accent btn-lg" %>
-  <% end %>
 
 <% elsif @ring.status == "generating" %>
   <div class="text-center py-5" data-controller="ring-poller">
@@ -72,9 +82,9 @@
         </div>
       </div>
 
-      <%# Week-by-week session timeline %>
+      <%# Week-by-week session accordion %>
       <h5 class="mb-3">Six-Session Plan</h5>
-      <div class="session-timeline mb-4">
+      <div class="accordion session-accordion mb-4" id="sessions-accordion">
         <% @sessions.each do |session| %>
           <%= render "rings/session_card", session: session %>
         <% end %>
@@ -120,9 +130,16 @@
   </div><%# /row %>
 
 <% elsif @ring.status == "failed" %>
-  <%= render "shared/ai_error", error_type: :error %>
-  <%= form_with url: generate_ring_path(@ring), method: :post do |f| %>
-    <%= f.submit "Retry", class: "btn btn-accent mt-3" %>
-  <% end %>
+  <div data-controller="curriculum-generator"
+       data-curriculum-generator-ring-path-value="<%= ring_path(@ring) %>">
+    <div data-curriculum-generator-target="form">
+      <%= render "shared/ai_error", error_type: :error %>
+      <%= form_with url: generate_ring_path(@ring), method: :post,
+            data: { action: "submit->curriculum-generator#start" } do |f| %>
+        <%= f.submit "Retry", class: "btn btn-accent mt-3" %>
+      <% end %>
+    </div>
+    <%= render "rings/generating_panel" %>
+  </div>
 
 <% end %>

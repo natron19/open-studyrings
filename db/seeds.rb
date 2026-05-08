@@ -21,13 +21,15 @@ end
 
 puts "Seeded: health_ping AI template"
 
-AiTemplate.find_or_create_by!(name: "studyrings_curriculum_v1") do |t|
-  t.description       = "Generates a complete O.R.B.I.T. learning charter and 6-session curriculum for a peer learning ring, structured to climb Bloom's Taxonomy from Week 1 to Week 6."
-  t.model             = "gemini-2.5-flash"
-  t.max_output_tokens = 3000
-  t.temperature       = 0.6
+# Curriculum template — use find_or_initialize_by so re-seeding updates it
+curriculum_template = AiTemplate.find_or_initialize_by(name: "studyrings_curriculum_v1")
+curriculum_template.assign_attributes(
+  description:    "Generates a complete O.R.B.I.T. learning charter and 6-session curriculum for a peer learning ring, structured to climb Bloom's Taxonomy from Week 1 to Week 6.",
+  model:          "gemini-2.5-flash",
+  max_output_tokens: 6000,
+  temperature:    0.6,
 
-  t.system_prompt = <<~PROMPT
+  system_prompt: <<~PROMPT,
     You are an expert peer learning facilitator who designs curricula for self-organized
     study groups called "rings". A ring is 4 to 8 peers who meet to learn a topic
     together with no instructor.
@@ -64,7 +66,7 @@ AiTemplate.find_or_create_by!(name: "studyrings_curriculum_v1") do |t|
     No markdown code fences. No explanations. Just the JSON object.
   PROMPT
 
-  t.user_prompt_template = <<~PROMPT
+  user_prompt_template: <<~PROMPT,
     Generate a complete O.R.B.I.T. learning curriculum for a peer learning ring.
 
     Inputs:
@@ -73,7 +75,8 @@ AiTemplate.find_or_create_by!(name: "studyrings_curriculum_v1") do |t|
     - Meeting frequency: {{meeting_frequency}}
     - Purpose: {{purpose}}
 
-    Return a single JSON object with this exact shape:
+    Return a single JSON object. Every session must have all five fields populated.
+    Use this exact shape:
 
     {
       "focus_statement": "<one paragraph naming what this ring is studying and why>",
@@ -98,39 +101,108 @@ AiTemplate.find_or_create_by!(name: "studyrings_curriculum_v1") do |t|
           "discussion_prompts": ["<prompt 1>", "<prompt 2>", "<prompt 3>"],
           "inquiry_activity": "<one collaborative activity description>"
         },
-        { "week_number": 2 },
-        { "week_number": 3 },
-        { "week_number": 4 },
-        { "week_number": 5 },
-        { "week_number": 6 }
+        {
+          "week_number": 2,
+          "guiding_question": "<one question for week 2>",
+          "resources": ["<resource 1>", "<resource 2>"],
+          "discussion_prompts": ["<prompt 1>", "<prompt 2>", "<prompt 3>"],
+          "inquiry_activity": "<one collaborative activity description>"
+        },
+        {
+          "week_number": 3,
+          "guiding_question": "<one question for week 3>",
+          "resources": ["<resource 1>", "<resource 2>"],
+          "discussion_prompts": ["<prompt 1>", "<prompt 2>", "<prompt 3>"],
+          "inquiry_activity": "<one collaborative activity description>"
+        },
+        {
+          "week_number": 4,
+          "guiding_question": "<one question for week 4>",
+          "resources": ["<resource 1>", "<resource 2>"],
+          "discussion_prompts": ["<prompt 1>", "<prompt 2>", "<prompt 3>"],
+          "inquiry_activity": "<one collaborative activity description>"
+        },
+        {
+          "week_number": 5,
+          "guiding_question": "<one question for week 5>",
+          "resources": ["<resource 1>", "<resource 2>"],
+          "discussion_prompts": ["<prompt 1>", "<prompt 2>", "<prompt 3>"],
+          "inquiry_activity": "<one collaborative activity description>"
+        },
+        {
+          "week_number": 6,
+          "guiding_question": "<one question for week 6>",
+          "resources": ["<resource 1>", "<resource 2>"],
+          "discussion_prompts": ["<prompt 1>", "<prompt 2>", "<prompt 3>"],
+          "inquiry_activity": "<one collaborative activity description>"
+        }
       ]
     }
-
-    The "sessions" array must contain exactly 6 objects, in week_number order from 1 to 6.
   PROMPT
 
-  t.notes = <<~NOTES
+  notes: <<~NOTES
     The Bloom's progression is enforced by the system prompt; Gemini does not reason
     about it. Watch for: (1) Week 6 producing another reading list instead of an
     artifact — tighten the artifact_template instruction if so. (2) Discussion prompts
     collapsing into closed yes/no questions for "beginner" rings. (3) Invite suggestions
     becoming generic ("invite an expert") — push toward specific perspective types.
-    (4) JSON parse failures from trailing commentary — the "no prose before or after"
-    instruction usually holds at temperature 0.6 but is not guaranteed. The controller
-    catches JSON::ParserError and treats it as a GeminiError.
+    (4) JSON parse failures from trailing commentary or code fences — the controller
+    strips markdown fences before parsing. If failures persist, check the raw Gemini
+    response in the admin LLM requests log.
   NOTES
-end
+)
+curriculum_template.save!
 
 puts "Seeded: studyrings_curriculum_v1 AI template"
 
-# Example ring for the demo user
+# Example rings for the demo user
 demo_user = User.find_by!(email: "demo@example.com")
 
-Ring.find_or_create_by!(user: demo_user, topic: "Network theory and how communities actually organize") do |r|
-  r.member_background  = "mixed"
-  r.meeting_frequency  = "biweekly"
-  r.purpose            = "Three of us keep arguing about whether 'community' has any concrete meaning, and we want to read together until we have a useful answer."
-  r.status             = "draft"
+rings = [
+  {
+    topic:              "Network theory and how communities actually organize",
+    member_background:  "mixed",
+    meeting_frequency:  "biweekly",
+    purpose:            "Three of us keep arguing about whether 'community' has any concrete meaning, and we want to read together until we have a useful answer.",
+    status:             "draft"
+  },
+  {
+    topic:              "The history and future of money",
+    member_background:  "mixed",
+    meeting_frequency:  "weekly",
+    purpose:            "We're a mix of engineers and one economist who want to understand why money behaves the way it does — from gold standards to stablecoins.",
+    status:             "draft"
+  },
+  {
+    topic:              "How to read scientific papers",
+    member_background:  "beginner",
+    meeting_frequency:  "weekly",
+    purpose:            "None of us have academic backgrounds but we keep hitting paywalled studies in our day jobs. We want to be able to read and evaluate research without a PhD.",
+    status:             "draft"
+  },
+  {
+    topic:              "Effective altruism and its critics",
+    member_background:  "experienced",
+    meeting_frequency:  "biweekly",
+    purpose:            "We've all read Singer and MacAskill. We want to seriously engage with the strongest objections — Wenar, Srinivasan, Haidt — and arrive at a defensible position.",
+    status:             "draft"
+  },
+  {
+    topic:              "Building with AI: separating signal from hype",
+    member_background:  "mixed",
+    meeting_frequency:  "weekly",
+    purpose:            "Half of us are developers who ship AI features daily; the other half are skeptics. We want a shared vocabulary for evaluating what AI actually changes and what it doesn't.",
+    status:             "draft"
+  }
+]
+
+rings.each do |attrs|
+  Ring.find_or_create_by!(user: demo_user, topic: attrs[:topic]) do |r|
+    r.member_background  = attrs[:member_background]
+    r.meeting_frequency  = attrs[:meeting_frequency]
+    r.purpose            = attrs[:purpose]
+    r.status             = attrs[:status]
+  end
 end
 
-puts "Seeded: example ring for demo user"
+puts "Seeded: #{rings.length} example rings for demo user"

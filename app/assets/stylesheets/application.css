@@ -25,17 +25,14 @@
 .ring-marker svg.size-md { width: 48px;  height: 48px; }
 .ring-marker svg.size-lg { width: 64px;  height: 64px; }
 
-/* Horizontal session timeline */
-.session-timeline {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 1rem;
+/* Session accordion tweaks */
+.session-accordion .accordion-button {
+  gap: 0.75rem;
 }
-.session-timeline .session-card {
-  min-width: 280px;
-  scroll-snap-align: start;
+.session-accordion .accordion-button:not(.collapsed) {
+  background-color: rgba(180, 83, 9, 0.12);
+  color: inherit;
+  box-shadow: none;
 }
 
 /* Artifact sidebar */

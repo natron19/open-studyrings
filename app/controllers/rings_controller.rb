@@ -48,7 +48,7 @@ class RingsController < ApplicationController
       }
     )
 
-    data     = JSON.parse(response, symbolize_names: true)
+    data     = JSON.parse(strip_code_fences(response), symbolize_names: true)
     sessions = data[:sessions]
 
     unless sessions.is_a?(Array) && sessions.length == 6
@@ -105,6 +105,10 @@ class RingsController < ApplicationController
 
   def set_ring
     @ring = current_user.rings.find(params[:id])
+  end
+
+  def strip_code_fences(text)
+    text.gsub(/\A\s*```(?:json)?\s*\n?/, "").gsub(/\n?\s*```\s*\z/, "").strip
   end
 
   def ring_params
