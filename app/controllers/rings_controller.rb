@@ -86,14 +86,17 @@ class RingsController < ApplicationController
 
   rescue GeminiService::BudgetExceededError
     @ring.update!(status: "failed")
+    @ai_error_type = :budget_exceeded
     render :show, status: :unprocessable_entity
 
   rescue GeminiService::GatekeeperError
     @ring.update!(status: "failed")
+    @ai_error_type = :gatekeeper_blocked
     render :show, status: :unprocessable_entity
 
   rescue GeminiService::TimeoutError
     @ring.update!(status: "failed")
+    @ai_error_type = :timeout
     render :show, status: :unprocessable_entity
 
   rescue GeminiService::GeminiError

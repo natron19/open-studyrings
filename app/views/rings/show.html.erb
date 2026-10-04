@@ -133,7 +133,7 @@
   <div data-controller="curriculum-generator"
        data-curriculum-generator-ring-path-value="<%= ring_path(@ring) %>">
     <div data-curriculum-generator-target="form">
-      <%= render "shared/ai_error", error_type: :error %>
+      <%= render "shared/ai_error", error_type: @ai_error_type || :error %>
       <%= form_with url: generate_ring_path(@ring), method: :post,
             data: { action: "submit->curriculum-generator#start" } do |f| %>
         <%= f.submit "Retry", class: "btn btn-accent mt-3" %>

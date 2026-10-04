@@ -1,0 +1,17 @@
+# Per-app guardrail configuration, read by AiGuardConfig.
+# See docs/ai-guardrails.md (Layer 1b: AiOutputGuard) and docs/ai-evals.md.
+
+# Study rings are topic-focused peer groups; personal distress is out of scope.
+crisis_terms: []
+
+#   format:        text | json
+#   required_keys: top-level keys the JSON object must contain
+templates:
+  health_ping:
+    format: text
+  # RingsController#generate parses JSON and fails without a 6-item "sessions" array.
+  # The charter fields (focus_statement, learning_goals, ...) are stored as-is and
+  # tolerate nil, so they are not required here.
+  studyrings_curriculum_v1:
+    format: json
+    required_keys: [sessions]
