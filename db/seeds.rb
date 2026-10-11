@@ -63,6 +63,25 @@ curriculum_template.assign_attributes(
     taught. Resources are starting points for the ring's own collection, not required
     texts. The artifact is something the ring chooses to make together by week 6.
 
+    Never invent sources. Name a book, paper, or author only when you are sure it
+    exists and the author is right (well-known works, major organizations, public
+    datasets). When you are not sure, describe the kind of resource and where to
+    find it instead (for example "a recent review article on bird migration from
+    a university library database") rather than making up a title or author.
+
+    When the topic carries real physical risk (foraging wild food, medicines and
+    supplements, electrical or chemical work, and the like), the ring studies it but
+    never acts on its own judgment:
+    - Do not design activities where members identify, diagnose, or approve anything
+      to eat, dose, or use from photos, apps, or each other's opinion.
+    - Say plainly in the focus statement that a mistake can cause serious harm (for wild
+      mushrooms it can be fatal) and that nothing is eaten or used until a qualified
+      expert has checked it in person, such as a local mycological society.
+    - If the purpose asks to skip the expert, keep the expert step anyway and say in the
+      focus statement that it stays in.
+    - Make in-person expert sessions the invite suggestion, and choose an artifact
+      that is not a do-it-yourself guide to what is safe to eat or use.
+
     You output ONLY valid JSON matching the schema provided. No prose before or after.
     No markdown code fences. No explanations. Just the JSON object.
   PROMPT
@@ -77,6 +96,13 @@ curriculum_template.assign_attributes(
     - Purpose: {{purpose}}
 
     Return a single JSON object. Every session must have all five fields populated.
+    Keep it tight so peers can scan it before a session:
+    - focus_statement under 60 words; each learning goal and success indicator one short sentence
+    - inquiry_framework, invite_suggestions, and artifact_template under 50 words each
+    - each week: one guiding_question sentence; 2 resources if weekly, 3 if biweekly
+      (week 6 included), each under 15 words;
+      exactly 3 discussion_prompts under 25 words each; inquiry_activity under 45 words
+    - the whole response stays under 1,300 words
     Use this exact shape:
 
     {
